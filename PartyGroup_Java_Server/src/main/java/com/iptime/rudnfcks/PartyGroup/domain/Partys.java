@@ -1,5 +1,6 @@
 package com.iptime.rudnfcks.PartyGroup.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
@@ -36,5 +37,5 @@ public class Partys {
 
     @Type(type = "jsonb")
     @Column(name = "member", columnDefinition = "jsonb")
-    private JsonPOJOBuilder member;
+    private Member member;
 }
