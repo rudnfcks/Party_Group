@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -37,5 +38,5 @@ public class Partys {
 
     @Type(type = "jsonb")
     @Column(name = "member", columnDefinition = "jsonb")
-    private Member member;
+    private List<Member> member;
 }
