@@ -12,8 +12,8 @@ public interface PartysRepository {
     List<Partys> findAll();
     Partys findById(long id);
     List<Partys> findByDate(short year, short month);
-    List<Member> addMember(long id, String name);
-    List<Member> delMember(long id, String name, String why);
-    void delParty(long id);
-    Partys modifyParty(long id, short year, short month, short day, String time, String place);
+    List<Member> addMember(long id, String name, String code);
+    List<Member> delMember(long id, String name, String why, String code);
+    void delete(long id);
+    Partys modify(long id, short year, short month, short day, String time, String place);
 }

@@ -8,12 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Member {
-    public Member() {
-        secession = false;
-        secession_why = "";
-    }
-
     private String name;
-    private Boolean secession;
-    private String secession_why;
+    private Boolean secession = false;
+    private String secession_why = "";
+    private String code = "";
 }

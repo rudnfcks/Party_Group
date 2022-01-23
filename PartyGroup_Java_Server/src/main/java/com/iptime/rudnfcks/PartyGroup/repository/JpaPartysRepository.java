@@ -10,8 +10,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Repository
+@RequiredArgsConstructor
 public class JpaPartysRepository implements PartysRepository {
 
     private final EntityManager em;
@@ -42,46 +42,53 @@ public class JpaPartysRepository implements PartysRepository {
     }
 
     @Override
-    public List<Member> addMember(long id, String name) {
+    public List<Member> addMember(long id, String name, String code) {
         Partys partys = findById(id);
 
         List<Member> members = partys.getMember();
         Member member = new Member();
         member.setName(name);
+        member.setCode(code);
         members.add(member);
         partys.setMember(members);
+        System.out.println(members);
 
-        em.detach(partys);
+        em.merge(partys);
 
         return members;
     }
 
     @Override
-    public List<Member> delMember(long id, String name, String why) {
+    public List<Member> delMember(long id, String name, String why, String code) {
         Partys partys = findById(id);
 
         List<Member> members = partys.getMember();
+        members = members.stream().map(m -> {
+            if(m.getCode().equals(code) && m.getName().equals(name)) {
+                m.setSecession(true);
+                m.setSecession_why(why);
+            }
+            return m;
+        })
+                        .collect(Collectors.toList());
 
-        members = members.stream()
-                .filter(m -> !m.getName().equals(name))
-                .collect(Collectors.toList());
         partys.setMember(members);
 
-        em.detach(partys);
+        em.merge(partys);
 
         return members;
     }
 
     @Override
-    public void delParty(long id) {
+    public void delete(long id) {
         Partys partys = findById(id);
         partys.setCancel(true);
 
-        em.detach(partys);
+        em.merge(partys);
     }
 
     @Override
-    public Partys modifyParty(long id, short year, short month, short day, String time, String place) {
+    public Partys modify(long id, short year, short month, short day, String time, String place) {
         Partys partys = findById(id);
 
         partys.setYear(year);
@@ -90,7 +97,7 @@ public class JpaPartysRepository implements PartysRepository {
         partys.setTime(time);
         partys.setPlace(place);
 
-        em.detach(partys);
+        em.merge(partys);
 
         return partys;
     }

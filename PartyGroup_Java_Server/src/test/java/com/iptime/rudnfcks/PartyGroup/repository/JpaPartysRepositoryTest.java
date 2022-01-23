@@ -2,11 +2,9 @@ package com.iptime.rudnfcks.PartyGroup.repository;
 
 import com.iptime.rudnfcks.PartyGroup.domain.Member;
 import com.iptime.rudnfcks.PartyGroup.domain.Partys;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 
 import javax.transaction.Transactional;
 
@@ -24,6 +22,7 @@ class JpaPartysRepositoryTest {
 
     @Test
     void 저장() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName("이름");
@@ -31,13 +30,16 @@ class JpaPartysRepositoryTest {
 
         Partys partys = makePartys(members);
 
+        // when
         partysRepository.save(partys);
 
+        // then
         assertThat(partysRepository.findAll().size()).isEqualTo(1);
     }
 
     @Test
     void 모두_검색() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName("이름");
@@ -49,11 +51,13 @@ class JpaPartysRepositoryTest {
         partysRepository.save(partys1);
         partysRepository.save(partys2);
 
+        // when then
         assertThat(partysRepository.findAll().size()).isEqualTo(2);
     }
 
     @Test
     void 아이디_검색() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName("이름");
@@ -65,12 +69,14 @@ class JpaPartysRepositoryTest {
         partysRepository.save(partys1);
         partysRepository.save(partys2);
 
-        assertThat(partysRepository.findById(1).getPlace().equals("장소 1"));
-        assertThat(partysRepository.findById(2).getPlace().equals("장소 2"));
+        // when then
+        assertThat(partysRepository.findById(1).getPlace()).isEqualTo("장소 1");
+        assertThat(partysRepository.findById(2).getPlace()).isEqualTo("장소 2");
     }
 
     @Test
     void 날짜_검색() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName("이름");
@@ -84,12 +90,14 @@ class JpaPartysRepositoryTest {
         partysRepository.save(partys2);
         partysRepository.save(partys3);
 
+        // when then
         assertThat(partysRepository.findByDate((short)2022,(short)1).size()).isEqualTo(1);
         assertThat(partysRepository.findByDate((short)2022,(short)2).size()).isEqualTo(2);
     }
 
     @Test
     void 멤버_추가() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName("이름 1");
@@ -100,34 +108,73 @@ class JpaPartysRepositoryTest {
 
         assertThat(partysRepository.findById(1).getMember().size()).isEqualTo(1);
 
-        partysRepository.addMember(1, "이름 2");
+        // when
+        partysRepository.addMember(1, "이름 2", "1234");
+
+        // then
         assertThat(partysRepository.findById(1).getMember().size()).isEqualTo(2);
     }
 
     @Test
-    void delMember() {
+    void 멤버_탈주() {
+        // given
         List<Member> members = new ArrayList<Member>();
         Member member1 = new Member();
-        member1.setName("이름 1");
-
         Member member2 = new Member();
+        member1.setName("이름 1");
         member2.setName("이름 2");
+        members.add(member1);
         members.add(member2);
 
         Partys partys = makePartys(members);
         partysRepository.save(partys);
-
         assertThat(partysRepository.findById(1).getMember().size()).isEqualTo(2);
 
-        partysRepository.delMember(1, "이름 2", "그냥ㅋ");
+        // when
+        partysRepository.delMember(1, "이름 2", "그냥ㅋ", "1234");
+
+        // then
+        assertThat(partysRepository.findById(1).getMember().size()).isEqualTo(1);
     }
 
     @Test
-    void delParty() {
+    void 파티_취소() {
+        // given
+        List<Member> members = new ArrayList<Member>();
+        Member member = new Member();
+        member.setName("이름");
+        members.add(member);
+
+        Partys partys = makePartys(members);
+        partysRepository.save(partys);
+
+        assertThat(partysRepository.findById(1).getCancel()).isEqualTo(false);
+
+        // when
+        partysRepository.delete(1);
+
+        // then
+        assertThat(partysRepository.findById(1).getCancel()).isEqualTo(true);
     }
 
     @Test
-    void modifyParty() {
+    void 파티_수정() {
+        // given
+        List<Member> members = new ArrayList<Member>();
+        Member member = new Member();
+        member.setName("이름");
+        members.add(member);
+
+        Partys partys = makePartys(members);
+        partysRepository.save(partys);
+
+        assertThat(partysRepository.findById(1).getPlace()).isEqualTo("나도 모르는 장소");
+
+        // when
+        partysRepository.modify(1, (short) 2022, (short) 3, (short) 1, "30:30", "빼액");
+
+        // then
+        assertThat(partysRepository.findById(1).getPlace()).isEqualTo("빼액");
     }
 
     Partys makePartys(List<Member> members) {
