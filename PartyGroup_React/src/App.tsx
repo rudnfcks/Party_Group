@@ -9,6 +9,7 @@ import Main from "./Pages/Main/Main";
 
 import "./assets/css/reset.css";
 import "./assets/css/lobby.css";
+import "./assets/css/main.css"
 
 function App() {
   // const Setting
@@ -24,9 +25,7 @@ function App() {
     let year: number = date.getFullYear();
     let month: number = date.getMonth() + 1;
 
-    axios
-      .get(`http://localhost:8080/party?year=${year}&month=${month}`)
-      .then((res) => setPartyData(res.data));
+    history.replace("/");
 
     setTimeout(() => {
       if (!cookies.infoName) {
@@ -35,6 +34,11 @@ function App() {
         history.replace("/main");
       }
     }, 1000);
+
+    axios
+      .get(`http://localhost:8080/party?year=${year}&month=${month}`)
+      .then((res) => setPartyData(res.data));
+
   }, [history, cookies]);
 
   // function Setting
