@@ -16,7 +16,7 @@ function App() {
   const history = useHistory();
 
   // State Setting
-  const [partyData, setPartyData] = useState([]);
+  const [partyData, setPartyData] = useState<any>([]);
   const [cookies, setCookie, delCookie] = useCookies(["infoName", "infoCode"]);
 
   // Effect Setting
@@ -35,13 +35,16 @@ function App() {
       }
     }, 1000);
 
-    axios
-      .get(`http://localhost:8080/party?year=${year}&month=${month}`)
-      .then((res) => setPartyData(res.data));
-
+    setPartyDataApi(year, month);
   }, [history, cookies]);
 
   // function Setting
+  const setPartyDataApi = (year: number, month: number) => {
+    axios
+      .get(`http://localhost:8080/party?year=${year}&month=${month}`)
+      .then((res) => setPartyData(res.data));
+  }
+
   const userLogin = (name: string) => {
     const now: Date = new Date();
 
@@ -57,7 +60,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/main" component={Main} />
+        <Route path="/main">
+          <Main partyData={partyData} setPartyDataApi={setPartyDataApi} />
+        </Route>
         <Route path="/login">
           <Login userLogin={userLogin} cookies={cookies} />
         </Route>

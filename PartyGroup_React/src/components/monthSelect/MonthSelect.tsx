@@ -2,15 +2,26 @@ import React, { useState } from "react";
 
 import styles from "./MonthSelect.module.css"
 import triangle from "../../assets/svg/triangle.svg"
+import axios from "axios";
 
-function MonthSelect() {
+interface prop {
+    setPartyDataApi: Function
+}
+
+function MonthSelect({ setPartyDataApi }: prop) {
     // satate Setting
     const [value, setValue] = useState(new Date().getMonth() + 1);
     const [isDrop, setIsDrop] = useState(false);
 
     // function Setting
     const onSelectClick = (event: any) => {
-        setValue(event.target.id);
+        let year = new Date().getFullYear();
+        let month = event.target.id;
+
+        if (value != month) {
+            setPartyDataApi(year, month);
+            setValue(event.target.id);
+        }
     }
     const onSelectBoxClick = () => {
         setIsDrop(current => !current);
