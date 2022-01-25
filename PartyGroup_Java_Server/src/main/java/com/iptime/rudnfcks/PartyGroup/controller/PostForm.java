@@ -10,6 +10,7 @@ public class PostForm {
     private short day;
     private String time;
     private String place;
+    private short count;
     private String name;
     private String code;
 }

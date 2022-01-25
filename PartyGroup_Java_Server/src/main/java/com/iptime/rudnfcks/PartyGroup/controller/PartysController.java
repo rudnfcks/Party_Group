@@ -27,11 +27,12 @@ public class PartysController {
         short day = form.getDay();
         String time = form.getTime();
         String place = form.getPlace();
+        short count = form.getCount();
         String name = form.getName();
         String code = form.getCode();
 
         try {
-            partysService.uploadParty(year, month, day, time, place, name, code);
+            partysService.uploadParty(year, month, day, time, place, count, name, code);
 
             return "저장이 완료되었습니다.";
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class PartysController {
                 .sorted(Comparator.comparing(Partys::getYear)
                         .thenComparing(Partys::getMonth)
                         .thenComparing(Partys::getDay)
-                        .thenComparing(Partys::getTime))
+                        .thenComparing(Partys::getTime).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -86,8 +87,9 @@ public class PartysController {
         short day = form.getDay();
         String time = form.getTime();
         String place = form.getPlace();
+        short count = form.getCount();
 
-        partysService.moidfyParty(id, year, month, day, time, place);
+        partysService.moidfyParty(id, year, month, day, time, place, count);
 
         return partysService.findId(id);
     }

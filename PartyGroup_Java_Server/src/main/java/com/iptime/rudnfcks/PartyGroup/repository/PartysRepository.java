@@ -15,5 +15,5 @@ public interface PartysRepository {
     List<Member> addMember(long id, String name, String code);
     List<Member> delMember(long id, String name, String why, String code);
     void delete(long id);
-    Partys modify(long id, short year, short month, short day, String time, String place);
+    Partys modify(long id, short year, short month, short day, String time, String place, short count);
 }

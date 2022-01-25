@@ -9,6 +9,7 @@ public class PartyForm {
     private short year;
     private short month;
     private short day;
-    String time;
-    String place;
+    private String time;
+    private String place;
+    private short count;
 }

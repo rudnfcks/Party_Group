@@ -9,7 +9,8 @@ import Main from "./Pages/Main/Main";
 
 import "./assets/css/reset.css";
 import "./assets/css/lobby.css";
-import "./assets/css/main.css"
+import "./assets/css/main.css";
+import Upload from "./Pages/Upload/Upload";
 
 function App() {
   // const Setting
@@ -43,13 +44,13 @@ function App() {
     axios
       .get(`http://localhost:8080/party?year=${year}&month=${month}`)
       .then((res) => setPartyData(res.data));
-  }
+  };
 
   const userLogin = (name: string) => {
     const now: Date = new Date();
 
-    setCookie("infoName", name, { maxAge: 2000 });
-    setCookie("infoCode", now.getTime(), { maxAge: 2000 });
+    setCookie("infoName", name, {});
+    setCookie("infoCode", now.getTime(), {});
   };
 
   const userLogout = () => {
@@ -61,7 +62,14 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/main">
-          <Main partyData={partyData} setPartyDataApi={setPartyDataApi} />
+          <Main
+            partyData={partyData}
+            setPartyDataApi={setPartyDataApi}
+            userLogout={userLogout}
+          />
+          <Route path="/main/upload">
+            <Upload />
+          </Route>
         </Route>
         <Route path="/login">
           <Login userLogin={userLogin} cookies={cookies} />

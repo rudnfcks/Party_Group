@@ -88,7 +88,7 @@ public class JpaPartysRepository implements PartysRepository {
     }
 
     @Override
-    public Partys modify(long id, short year, short month, short day, String time, String place) {
+    public Partys modify(long id, short year, short month, short day, String time, String place, short count) {
         Partys partys = findById(id);
 
         partys.setYear(year);
@@ -96,6 +96,7 @@ public class JpaPartysRepository implements PartysRepository {
         partys.setDay(day);
         partys.setTime(time);
         partys.setPlace(place);
+        partys.setCount(count);
 
         em.merge(partys);
 

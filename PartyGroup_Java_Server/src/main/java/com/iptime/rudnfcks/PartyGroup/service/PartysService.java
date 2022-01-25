@@ -15,7 +15,7 @@ import java.util.List;
 public class PartysService {
     private final PartysRepository partysRepository;
 
-    public Partys uploadParty(short year, short month, short day, String time, String place, String name, String code) {
+    public Partys uploadParty(short year, short month, short day, String time, String place, short count, String name, String code) {
         List<Member> members = new ArrayList<Member>();
         Member member = new Member();
         member.setName(name);
@@ -28,6 +28,7 @@ public class PartysService {
         partys.setDay(day);
         partys.setTime(time);
         partys.setPlace(place);
+        partys.setCount(count);
         partys.setCancel(false);
         partys.setMember(members);
 
@@ -62,7 +63,7 @@ public class PartysService {
         partysRepository.delete(id);
     }
 
-    public Partys moidfyParty(long id, short year, short month, short day, String time, String place) {
-        return partysRepository.modify(id, year, month, day, time, place);
+    public Partys moidfyParty(long id, short year, short month, short day, String time, String place, short count) {
+        return partysRepository.modify(id, year, month, day, time, place, count);
     }
 }

@@ -171,7 +171,7 @@ class JpaPartysRepositoryTest {
         assertThat(partysRepository.findById(1).getPlace()).isEqualTo("나도 모르는 장소");
 
         // when
-        partysRepository.modify(1, (short) 2022, (short) 3, (short) 1, "30:30", "빼액");
+        partysRepository.modify(1, (short) 2022, (short) 3, (short) 1, "30:30", "빼액", (short) 2);
 
         // then
         assertThat(partysRepository.findById(1).getPlace()).isEqualTo("빼액");

@@ -36,6 +36,9 @@ public class Partys {
     @Column(name = "cancel")
     private Boolean cancel;
 
+    @Column(name = "count")
+    private Short count;
+
     @Type(type = "jsonb")
     @Column(name = "member", columnDefinition = "jsonb")
     private List<Member> member;
