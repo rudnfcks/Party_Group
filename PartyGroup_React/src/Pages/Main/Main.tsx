@@ -28,9 +28,10 @@ interface prop {
   partyData: partyData[];
   setPartyDataApi: Function;
   userLogout: Function;
+  setJoinParty: Function;
 }
 
-function Main({ partyData, setPartyDataApi, userLogout }: prop) {
+function Main({ partyData, setPartyDataApi, userLogout, setJoinParty }: prop) {
   // const Setting
   const history = useHistory();
   const week = [
@@ -42,8 +43,6 @@ function Main({ partyData, setPartyDataApi, userLogout }: prop) {
     "금요일",
     "토요일",
   ];
-
-  history.push("/main/upload");
 
   // function Setting
   const weekCount = (partyData: partyData[]) => {
@@ -58,6 +57,12 @@ function Main({ partyData, setPartyDataApi, userLogout }: prop) {
   const logoutClick = () => {
     userLogout();
   };
+  const toUploadPage = () => {
+    history.push('/main/upload');
+  }
+  const onJoinParty = () => {
+
+  }
 
   return (
     <div id="main">
@@ -93,12 +98,12 @@ function Main({ partyData, setPartyDataApi, userLogout }: prop) {
       </div>
       {/* header > nav */}
       <div className={styles.nav}>
-        <button>공지 올리기</button>
+        <button onClick={toUploadPage}>공지 올리기</button>
       </div>
       {/* header > section */}
       <div className={styles.section}>
         {partyData.map((data: any, key: number) => (
-          <Card partyData={data} key={key} />
+          <Card partyData={data} setJoinParty={setJoinParty} key={key} />
         ))}
       </div>
     </div>

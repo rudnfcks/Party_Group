@@ -12,6 +12,15 @@ import "./assets/css/lobby.css";
 import "./assets/css/main.css";
 import Upload from "./Pages/Upload/Upload";
 
+interface formData {
+  year: number;
+  month: number;
+  day: number;
+  time: string;
+  place: string;
+  count: number;
+}
+
 function App() {
   // const Setting
   const history = useHistory();
@@ -45,6 +54,40 @@ function App() {
       .get(`http://localhost:8080/party?year=${year}&month=${month}`)
       .then((res) => setPartyData(res.data));
   };
+  const postPartyDataApi = (data:formData) => {
+    let date: Date = new Date();
+    let year: number = date.getFullYear();
+    let month: number = date.getMonth() + 1;
+
+    let form = new FormData();
+    form.append('year', data.year.toString());
+    form.append('month', data.month.toString());
+    form.append('day', data.day.toString());
+    form.append('time', data.time);
+    form.append('place', data.place);
+    form.append('count', data.count.toString());
+    form.append('name', cookies.infoName);
+    form.append('code', cookies.infoCode.toString());
+
+    axios
+      .post(`http://localhost:8080/party`, form)
+      .then(() => setPartyDataApi(year, month));
+  }
+
+  const setJoinParty = (id: number) => {
+    let date: Date = new Date();
+    let year: number = date.getFullYear();
+    let month: number = date.getMonth() + 1;
+
+    let form = new FormData();
+    form.append('id', id.toString());
+    form.append('name', cookies.infoName);
+    form.append('code', cookies.infoCode);
+
+    axios
+      .put("http://localhost:8080/member", form)
+      .then(() => setPartyDataApi(year, month));
+  }
 
   const userLogin = (name: string) => {
     const now: Date = new Date();
@@ -66,9 +109,10 @@ function App() {
             partyData={partyData}
             setPartyDataApi={setPartyDataApi}
             userLogout={userLogout}
+            setJoinParty={setJoinParty}
           />
           <Route path="/main/upload">
-            <Upload />
+            <Upload postPartyDataApi={postPartyDataApi} />
           </Route>
         </Route>
         <Route path="/login">

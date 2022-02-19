@@ -16,6 +16,7 @@ interface member {
 }
 
 interface partyData {
+  id: number;
   year: number;
   month: number;
   day: number;
@@ -27,9 +28,10 @@ interface partyData {
 
 interface prop {
   partyData: partyData;
+  setJoinParty: Function;
 }
 
-function Card({ partyData }: prop) {
+function Card({ partyData, setJoinParty }: prop) {
   // cookies Setting
   const [cookies, setCookie, delCookie] = useCookies(["infoName", "infoCode"]);
 
@@ -56,6 +58,22 @@ function Card({ partyData }: prop) {
       return moon;
     }
   };
+  const partyJoin = () => {
+    let isJoin = partyData.member.filter(data => data.code === cookies.infoCode);
+
+    if (isJoin.length === 0 && partyData.count !== partyData.member.length) {
+      setJoinParty(partyData.id)
+    }
+  }
+  const isJoin = () => {
+    let value = partyData.member.filter(data => data.code === cookies.infoCode);
+
+    if (value.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   return (
     <div className={styles.card}>
@@ -83,12 +101,20 @@ function Card({ partyData }: prop) {
       </div>
       <div className={styles.form}>
         <div className={styles.buttons}>
-          <button>
-            <img src={pen} />
-          </button>
-          <button>
-            <img src={trashCan} />
-          </button>
+          {
+          partyData.member[0].name === cookies.infoName && partyData.member[0].code === cookies.infoCode ? (
+            <>
+              <button>
+                <img src={pen} />
+              </button>
+              <button>
+                <img src={trashCan} />
+              </button>
+            </>
+            ) : 
+            ""
+          }
+          
         </div>
         <div className={styles.img}>
           <img src={getImg()} />
@@ -97,9 +123,10 @@ function Card({ partyData }: prop) {
           <span>
             {partyData.member.length}/{partyData.count} 명
           </span>
-          <button>참여</button>
+          <button className={isJoin() ? styles.active : ""} onClick={partyJoin}>{isJoin() ? "탈주" : "참여"}</button>
         </div>
       </div>
+      { partyData.count === partyData.member.length && <div className={styles.cardBlock}></div> }
     </div>
   );
 }
