@@ -1,5 +1,6 @@
 package com.rudnfcks.partyGroup.domain;
 
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,11 +10,12 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
+@Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class TimeEntity {
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
     @LastModifiedDate

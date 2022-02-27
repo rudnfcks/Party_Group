@@ -8,5 +8,6 @@ spring:
     hibernate:
       ddl-auto: create
 
+
 server:
   port: 5000

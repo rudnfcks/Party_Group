@@ -73,7 +73,7 @@ public class Partys extends TimeEntity {
     }
 
     public static String dateTimeToDate(Date dateTime) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
         return df.format(dateTime);
     }
 }
