@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -108,15 +110,17 @@ class PartysServiceTest {
 
         long id = partysService.createParty(partysDto);
         partysService.addMember(id, member);
+
+        member.setSecession_why("그냥 취소");
+
         partysService.delMember(id, member);
 
-        assertThat(partysService.findOne(id).get().getMembers().size()).isEqualTo(1);
+        assertThat(partysService.findOne(id).get().getMembers().get(1).getSecession_why()).isEqualTo("그냥 취소");
+        assertThat(partysService.findOne(id).get().getMembers().get(1).getSecession()).isEqualTo(true);
     }
 
     private Partys newParty(int year, int month, int day, String name, String code) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month-1, day);
+        LocalDateTime now = LocalDateTime.now();
 
         Member member = Member.builder()
                 .name(name)
@@ -130,8 +134,8 @@ class PartysServiceTest {
 
         Partys partys = Partys.builder()
                 .id(0L)
-                .dateTime(cal.getTime())
-                .date(df.format(cal.getTime()))
+                .dateTime(now)
+                .date(now.format(DateTimeFormatter.ofPattern("yyyy-MM")))
                 .place("테스트 장소")
                 .memberCount(4)
                 .isCancel(false)

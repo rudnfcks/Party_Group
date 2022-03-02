@@ -4,14 +4,17 @@ import com.rudnfcks.partyGroup.domain.Member;
 import com.rudnfcks.partyGroup.domain.Partys;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 public class PartysDto {
     private Long id;
-    private Date dateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateTime;
     private String date;
     private String place;
     private int memberCount;
@@ -35,7 +38,7 @@ public class PartysDto {
     @Builder
     public PartysDto(
             Long id,
-            Date dateTime,
+            LocalDateTime dateTime,
             String date,
             String place,
             int memberCount,

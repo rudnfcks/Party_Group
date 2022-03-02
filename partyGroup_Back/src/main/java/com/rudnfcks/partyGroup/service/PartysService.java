@@ -89,9 +89,15 @@ public class PartysService {
             return 0L;
         } else {
             List<Member> members = party.get().getMembers();
-            members = members.stream().filter((item) ->
-                    item.getCode().equals(member.getCode())
-            ).collect(Collectors.toList());
+            members = members.stream().map((item) -> {
+                if (item.getCode().equals(member.getCode())) {
+                    item.setSecession(true);
+                    item.setSecession_why(member.getSecession_why());
+                    return item;
+                } else {
+                    return item;
+                }
+            }).collect(Collectors.toList());
 
             party.get().updateMembers(members);
 

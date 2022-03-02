@@ -4,15 +4,18 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Table(name = "partys")
 public class Partys extends TimeEntity {
@@ -20,7 +23,7 @@ public class Partys extends TimeEntity {
     private Long id;
 
     @Column(name = "date_time", nullable = false)
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "date", nullable = false)
     private String date; // yyyy-MM
@@ -41,7 +44,7 @@ public class Partys extends TimeEntity {
     @Builder
     public Partys (
         Long id,
-        Date dateTime,
+        LocalDateTime dateTime,
         String date,
         String place,
         int memberCount,
@@ -57,7 +60,7 @@ public class Partys extends TimeEntity {
         this.members = members;
     }
 
-    public void update(Date dateTime, String place, int memberCount) {
+    public void update(LocalDateTime dateTime, String place, int memberCount) {
         this.dateTime = dateTime;
         this.date = dateTimeToDate(dateTime);
         this.place = place;
@@ -72,8 +75,7 @@ public class Partys extends TimeEntity {
         this.isCancel = isCancel;
     }
 
-    public static String dateTimeToDate(Date dateTime) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
-        return df.format(dateTime);
+    public static String dateTimeToDate(LocalDateTime dateTime) {
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM"));
     }
 }
