@@ -1,5 +1,6 @@
 package com.rudnfcks.partyGroup.controller;
 
+import com.rudnfcks.partyGroup.config.GlobalMathod;
 import com.rudnfcks.partyGroup.controller.Dto.MemberDto;
 import com.rudnfcks.partyGroup.controller.Dto.PartysDto;
 import com.rudnfcks.partyGroup.domain.Member;
@@ -51,8 +52,10 @@ public class PartysController {
         }
     }
 
-    @PostMapping("/member/{id}") // 멤버 추가
-    public ResponseEntity addMember(@PathVariable long id, @RequestBody MemberDto memberDto) {
+    @PostMapping("/member/{strId}") // 멤버 추가
+    public ResponseEntity addMember(@PathVariable String strId, @RequestBody MemberDto memberDto) {
+        long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
+
         try {
             Optional<Partys> value = partysService.findOne(id);
             if (value.isEmpty()) { // DB에 값이 없다면
@@ -66,8 +69,10 @@ public class PartysController {
         }
     }
 
-    @DeleteMapping("/member/{id}") // 멤버 취소
-    public ResponseEntity delMember(@PathVariable long id, @RequestHeader("Mbr_Code") String code, @RequestBody MemberDto memberDto) {
+    @DeleteMapping("/member/{strId}") // 멤버 취소
+    public ResponseEntity delMember(@PathVariable String strId, @RequestHeader("Mbr_Code") String code, @RequestBody MemberDto memberDto) {
+        long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
+
         try {
             Optional<Partys> value = partysService.findOne(id);
 
@@ -90,8 +95,10 @@ public class PartysController {
         }
     }
 
-    @PutMapping("/party/{id}") // 파티 수정
-    public ResponseEntity modifyParty(@PathVariable long id, @RequestHeader("Mbr_Code") String code, @RequestBody PartysDto partysDto) {
+    @PutMapping("/party/{strId}") // 파티 수정
+    public ResponseEntity modifyParty(@PathVariable String strId, @RequestHeader("Mbr_Code") String code, @RequestBody PartysDto partysDto) {
+        long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
+
         try {
             Optional<Partys> value = partysService.findOne(id);
 
@@ -112,8 +119,10 @@ public class PartysController {
         }
     }
 
-    @DeleteMapping("/party/{id}") // 파티 취소
-    public ResponseEntity delParty(@PathVariable long id, @RequestHeader("Mbr_Code") String code) {
+    @DeleteMapping("/party/{strId}") // 파티 취소
+    public ResponseEntity delParty(@PathVariable String strId, @RequestHeader("Mbr_Code") String code) {
+        long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
+
         try {
             Optional<Partys> value = partysService.findOne(id);
 

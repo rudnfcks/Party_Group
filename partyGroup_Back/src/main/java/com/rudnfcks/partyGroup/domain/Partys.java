@@ -18,8 +18,15 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Table(name = "partys")
+@SequenceGenerator(
+        name = "PG_SEQ_GENERATOR",
+        sequenceName = "PG_SEQ",
+        initialValue = 10000000,
+        allocationSize = 1
+)
 public class Partys extends TimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                        generator = "PG_SEQ_GENERATOR")
     private Long id;
 
     @Column(name = "date_time", nullable = false)
