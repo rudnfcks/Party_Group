@@ -1,7 +1,0 @@
-{
-  "name": "partyGroup_Front",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
