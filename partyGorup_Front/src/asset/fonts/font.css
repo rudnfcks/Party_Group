@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "gothic";
+    src: url("GothicA1-Regular.ttf") format("truetype"), url("GothicA1-Regular.eot?iefix") format("embedded-opentype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "gothic";
+    src: url("GothicA1-Bold.ttf") format("truetype"), url("GothicA1-Bold.eot?iefix") format("embedded-opentype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "sans";
+    src: url("BlackHanSans-Regular.ttf") format("truetype"), url("BlackHanSans-Regular.eot?iefix") format("embedded-opentype");
+}
+
+@font-face {
+    font-family: "logo";
+    src: url("Righteous-Regular.ttf") format("truetype"), url("Righteous-Regular.eot?iefix") format("embedded-opentype");
+}
