@@ -1,11 +1,9 @@
 import React from "react";
-import JoinInput from "./components/Input/JoinInput";
+import Router from "./Router";
 
 function App() {
   return (
-    <>
-      <JoinInput placeholder="이름을 입력해주세요." />
-    </>
+    <Router />
   );
 }
 

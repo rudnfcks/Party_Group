@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-function ImgButton({onClick, url, alt}) {
+function ImgButton({size, onClick, url, alt}) {
     return(
-        <ButtonContainer onClick={onClick}>
+        <ButtonContainer size={size} onClick={onClick}>
             <img src={url} alt={alt}/>
         </ButtonContainer>
     )
@@ -12,8 +12,8 @@ function ImgButton({onClick, url, alt}) {
 const ButtonContainer = styled.button`
     padding: 0;
 
-    width: 20px;
-    height: 20px;
+    width: ${(props) => (props.size)}px;
+    height: ${(props) => (props.size)}px;
 
     background: none;
 
@@ -22,8 +22,8 @@ const ButtonContainer = styled.button`
     img {
         display: block;
 
-        width: 20px;
-        height: 20px;
+        width: ${(props) => (props.size)}px;
+        height: ${(props) => (props.size)}px;
     }
 `
 

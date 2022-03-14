@@ -5,6 +5,7 @@ import com.rudnfcks.partyGroup.domain.Member;
 import com.rudnfcks.partyGroup.domain.Partys;
 import com.rudnfcks.partyGroup.repository.PartysRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,8 @@ public class PartysService {
 
     @Transactional
     public List<Partys> findPartys(String date) {
-        return partysRepository.findByDate(date);
+        Sort sort = Sort.by(Sort.Direction.ASC, "dateTime");
+        return partysRepository.findByDate(date, sort);
     }
 
     @Transactional

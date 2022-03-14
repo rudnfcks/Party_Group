@@ -17,6 +17,9 @@ const JoinInput = styled.input`
         color: #aaaaaa;
         text-align: left;
     }
+    &:focus {
+        outline: none;
+    }
 `
 
 export default JoinInput;
