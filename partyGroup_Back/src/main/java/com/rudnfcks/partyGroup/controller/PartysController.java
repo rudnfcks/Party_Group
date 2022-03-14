@@ -70,7 +70,7 @@ public class PartysController {
     }
 
     @DeleteMapping("/member/{strId}") // 멤버 취소
-    public ResponseEntity delMember(@PathVariable String strId, @RequestHeader("Mbr_Code") String code, @RequestBody MemberDto memberDto) {
+    public ResponseEntity delMember(@PathVariable String strId, @RequestHeader("X-Mbr-Code") String code, @RequestBody MemberDto memberDto) {
         long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
 
         try {
@@ -96,7 +96,7 @@ public class PartysController {
     }
 
     @PutMapping("/party/{strId}") // 파티 수정
-    public ResponseEntity modifyParty(@PathVariable String strId, @RequestHeader("Mbr_Code") String code, @RequestBody PartysDto partysDto) {
+    public ResponseEntity modifyParty(@PathVariable String strId, @RequestHeader("X-Mbr-Code") String code, @RequestBody PartysDto partysDto) {
         long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
 
         try {
@@ -120,7 +120,7 @@ public class PartysController {
     }
 
     @DeleteMapping("/party/{strId}") // 파티 취소
-    public ResponseEntity delParty(@PathVariable String strId, @RequestHeader("Mbr_Code") String code) {
+    public ResponseEntity delParty(@PathVariable String strId, @RequestHeader("X-Mbr-Code") String code) {
         long id = Long.parseLong(GlobalMathod.decodeBase64(strId));
 
         try {
