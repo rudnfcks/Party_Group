@@ -9,21 +9,36 @@ import { HomeConteiner } from "./HomeConteiner";
 import { dateToString } from "../../Util";
 
 function Home({setPage}) {
-  const store = useStore();
-  const { year, month, day, week, date } = dateToString(new Date());
+  const store = useStore()
+  const { year, month, day, week, date } = dateToString(new Date())
 
-  const [selectMonth, setSelectMonth] = useState(month);
+  const [selectMonth, setSelectMonth] = useState(month)
   const onSelectMonthChange = (value) => {
-    setSelectMonth(value);
-    store.getPartysInfo(year, value);
+    setSelectMonth(value)
+    store.getPartysInfo(year, value)
   };
 
+  const [scrollEvent, setScrollEvent] = useState(0)
+
   useEffect(() => {
-    store.getPartysInfo(year, selectMonth);
-  }, [year, month]);
+    window.addEventListener('scroll', () => {setScrollEvent(window.scrollY)})
+    store.getPartysInfo(year, selectMonth)
+  }, [year, selectMonth])
 
   return (
-    <HomeConteiner>
+    <HomeConteiner scroll={scrollEvent}>
+      <header id="fixHeader">
+        <MainLogo color="#ffffff" />
+        <MonthSelect value={selectMonth} onChange={onSelectMonthChange} />
+
+        <div id="date">
+          <span>
+            {year}. {month}. {day}
+          </span>
+          <span>{week}</span>
+        </div>
+      </header>
+
       <header id="header">
         <MainLogo color="#501E6F" />
         <MonthSelect value={selectMonth} onChange={onSelectMonthChange} />

@@ -1,6 +1,67 @@
 import styled from "@emotion/styled";
 
 export const HomeConteiner = styled.div`
+    #fixHeader {
+        position: fixed;
+        z-index: 15;
+        
+        box-sizing: border-box;
+        padding: 16px;
+
+        width: 100%;
+        height: 132px;
+
+        background: #9E40D7;
+        border-radius: 0 0 16px 16px;
+
+        opacity: ${(props) => (props.scroll/100)};
+
+        span {
+            float: left;
+        }
+        select {
+            margin-top: 18px;
+            float: right;
+            background-color: #ffffff;
+        }
+
+        #date {
+            margin-top: 64px;
+
+            width: 100%;
+            height: 40px;
+
+            span:nth-of-type(1) {
+                float: left;
+
+                width: 248px;
+                height: 40px;
+
+                font-size: 40px;
+                font-family: "sans";
+                color: #ffffff;
+            }
+
+            span:nth-of-type(2) {
+                float: right;
+
+                display: block;
+                margin-top: 12px;
+
+                width: 68px;
+                height: 28px;
+
+                background: #ffffff;
+                border-radius: 8px;
+
+                font-size: 20px;
+                font-family: "sans";
+                line-height: 28px;
+                text-align: center;
+                color: #501E6F;
+            }
+        }
+    }
     #header {
         width: 100%;
         height: 84px;
@@ -30,6 +91,8 @@ export const HomeConteiner = styled.div`
         border-radius: 16px;
 
         box-shadow: 0px 4px 8px rgba(0,0,0,0.25);
+
+        opacity: ${(props) => (1 - props.scroll/80)};
 
         p {
             height: 18px;

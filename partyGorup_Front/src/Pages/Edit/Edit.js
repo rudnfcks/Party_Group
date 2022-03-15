@@ -9,7 +9,6 @@ import Input from "../../components/Input/Input";
 import DateInput from "../../components/Input/DateInput";
 import { useStore } from "../../Api";
 import { dateToString } from "../../Util";
-import { getCookie } from "../../cookie";
 import Swal from "sweetalert2";
 
 function Edit({ setPage }) {
