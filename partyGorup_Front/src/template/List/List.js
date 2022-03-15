@@ -14,30 +14,17 @@ function List({ listId, info, name, code }) {
   const date = new Date(info.dateTime);
   const now = new Date();
 
-  const isJoin = info.members.filter((item) => item.name === name).length > 0;
-  const joinParty = () => {
-    store.joinParty(listId, {
-      name: name,
-      secession_why: "",
-      code: code,
-    });
-  };
-  const leaveParty = () => {
-    store.leaveParty(listId, {
-      name: name,
-      code: code,
-    });
-  };
+  const isJoin = info.members.filter((item) => item.name === name && !item.secession).length > 0;
 
   const onButtonClick = async () => {
     if (!isJoin) {
-      joinParty(listId, {
+      store.joinParty(listId, {
         name: name,
         secession_why: "",
         code: code,
       });
     } else {
-      const { value: getName } = await Swal.fire({
+      const { value: secessionWhy } = await Swal.fire({
         title: "취소사유를 알려주세요!",
         input: "text",
         showCancelButton: true,
@@ -46,10 +33,11 @@ function List({ listId, info, name, code }) {
         cancelButtonText: "취소",
         confirmButtonText: "확인",
       });
-      if (getName) {
-        leaveParty(listId, code, {
+      if (secessionWhy) {
+        store.leaveParty(listId, code, {
           name: name,
-          secession_why: getName,
+          secession_why: secessionWhy,
+          code: code,
         });
       }
     }
@@ -70,11 +58,11 @@ function List({ listId, info, name, code }) {
       </div>
       <div className="middle">
         <span>{`${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}`}</span>
-        <span>{`${info.members.length}/${info.memberCount}`}</span>
+        <span>{`${info.members.filter((item)=>(!item.secession)).length}/${info.memberCount}`}</span>
       </div>
       <div className="bottom">
         <p>
-          {info.members.map((item, key) => (
+          {info.members.map((item, key) => !item.secession && (
             <span key={key} className={key === 0 ? "owner" : ""}>
               {item.name}{" "}
             </span>

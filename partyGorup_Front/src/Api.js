@@ -1,6 +1,14 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import create from "zustand";
+import { getCookie } from "./cookie";
+
+const instance = axios.create(
+  {headers: {
+    "X-Mbr-Code": getCookie("code"),
+    "Content-Type": "application/json"
+  }}
+)
 
 const url = "/api/";
 
@@ -22,7 +30,7 @@ export const useStore = create((set) => ({
   getPartysInfo(year, month) {
     set({ partys: null });
 
-    axios
+    instance
       .get(`${url}partys?date=${year}-${month}`)
       .then((res) => {
         set({ partys: res.data });
@@ -33,15 +41,14 @@ export const useStore = create((set) => ({
   },
 
   addParty(data) {
-    axios
-      .post(`${url}party`, data, {
-        headers: { "Content-Type": "application/json" },
-      })
+    instance
+      .post(`${url}party`, data)
       .then((res) => {
         toast.fire({
           icon: 'success',
           title: "정상적으로 생성됐어요!"
         })
+        set((state) => ({partys: state.partys}))
       })
       .catch((err) => {
         toast.fire({
@@ -52,24 +59,20 @@ export const useStore = create((set) => ({
   },
 
   joinParty(id, data) {
-    axios
-      .post(`${url}member/${btoa(id.toString())}`, data, {
-        headers: { "Content-Type": "application/json" },
-      })
+    instance
+      .post(`${url}member/${btoa(id.toString())}`, data)
       .then((res) => {
         toast.fire({
           icon: 'success',
           title: "정상적으로 참여했어요!"
         })
-        set((state) => ({
-          partys: state.partys.map((item) => {
+        let temp = this.partys.map((item) => {
             if(item.id === id) {
-              return item.members.push(data)
-            } else {
-              return item
+              item.members.push(data)
             }
+            return {...item}
           })
-        }))
+        set({partys: temp})
       })
       .catch((err) => {
         toast.fire({
@@ -80,35 +83,31 @@ export const useStore = create((set) => ({
   },
 
   leaveParty(id, code, data) {
-    axios.delete(`${url}member/${btoa(id.toString())}`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        'x-mbr-code': code.toString(),
-      }
-    })
-    .then((res) => {
-      toast.fire({
-        icon: 'success',
-        title: "정상적으로 참여했어요!"
-      })
-      set((state) => ({
-        partys: state.partys.map((item) => {
-          if(item.id === id) {
-            return item.members.filter((member) => (member.code !== code))
-          }
+    instance
+      .delete(`${url}member/${btoa(id.toString())}`, {data})
+      .then((res) => {
+        toast.fire({
+          icon: 'success',
+          title: "정상적으로 취소했어요!"
         })
-      }))
-    })
-    .catch((err) => {
-      console.log(err)
-      toast.fire({
-        icon: 'warning',
-        title: "다시 시도해주세요!"
+        set((state) => ({
+          partys: state.partys.map((item) => {
+            if(item.id === id) {
+              return {...item, members: item.members.filter((member) => (member.code !== code))}
+            }
+            return {...item}
+          })
+        }))
       })
-    })
+      .catch((err) => {
+        console.log(err)
+        console.log(err.body)
+        toast.fire({
+          icon: 'warning',
+          title: "다시 시도해주세요!"
+        })
+      })
   },
 
   delParty(id) {},
-
-  outParty(id) {},
 }));
