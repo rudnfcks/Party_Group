@@ -71,7 +71,7 @@ function Home({setPage}) {
       <section id="content">
         {
           // 기간이 남은 리스트
-          store.partys !== null || store.partys !== [] ? (
+          store.partys !== null ? (
             store.partys
               .filter((item) => new Date(item.dateTime) >= date && !item.cancel)
               .map((item) => (
