@@ -8,7 +8,7 @@ import Button from "../../components/Button/Button";
 import { useStore } from "../../Api";
 import Swal from "sweetalert2";
 
-function List({ listId, info, name, code }) {
+function List({ listId, info, name, code, disable }) {
   const store = useStore();
 
   const date = new Date(info.dateTime);
@@ -41,7 +41,21 @@ function List({ listId, info, name, code }) {
         });
       }
     }
-  };
+  }
+
+  const onDelClick = () => {
+    Swal.fire({
+      title: "정말 취소 할까요?",
+      showCancelButton: true,
+      confirmButtonColor: "#9E40D7",
+      cancelButtonText: "취소",
+      confirmButtonText: "확인",
+    }).then(result => {
+      if (result.isConfirmed) {
+        store.delParty(info.id)
+      }
+    })
+  }
 
   return (
     <ListContainer>
@@ -50,7 +64,7 @@ function List({ listId, info, name, code }) {
         {info.members[0].name === name ? (
           <div>
             <ImgButton url={modify} alt="수정" size={20} />
-            <ImgButton url={trashCan} alt="삭제" size={20} />
+            <ImgButton url={trashCan} alt="삭제" size={20} onClick={onDelClick} />
           </div>
         ) : (
           ""
@@ -72,7 +86,7 @@ function List({ listId, info, name, code }) {
           <Button onClick={onButtonClick}>{isJoin ? "취소" : "참여"}</Button>
         )}
       </div>
-      {date < now && <div className="disable"></div>}
+      {disable && <div className="disable"></div>}
     </ListContainer>
   );
 }

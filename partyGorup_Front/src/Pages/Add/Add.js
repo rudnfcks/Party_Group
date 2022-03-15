@@ -41,8 +41,6 @@ function Add({ setPage }) {
 
     const { year, month, day, hours, minutes, second } = dateToString(dateTime);
 
-    navigate("/home", { replace: true });
-
     store.addParty({
       id: 0,
       dateTime: `${year}-${month}-${day}T${hours}:${minutes}:${second}`,
@@ -58,7 +56,7 @@ function Add({ setPage }) {
           code: getCookie("code"),
         },
       ],
-    });
+    }).then(navigate("/home", { replace: true }))    
   };
 
   return (
@@ -80,8 +78,8 @@ function Add({ setPage }) {
 
         <div id="section">
           <Input
-            label="장소"
-            placeholder="장소 입력"
+            label="장소/제목"
+            placeholder="장소/제목 입력"
             type="text"
             value={inputInfo.place}
             onChange={(value) => {

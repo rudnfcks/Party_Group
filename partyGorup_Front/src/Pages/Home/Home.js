@@ -7,7 +7,6 @@ import { getCookie } from "../../cookie";
 import List from "../../template/List/List";
 import { HomeConteiner } from "./HomeConteiner";
 import { dateToString } from "../../Util";
-import CancelModal from "../../template/Modal/CancelModal";
 
 function Home() {
   const store = useStore();
@@ -18,8 +17,6 @@ function Home() {
     setSelectMonth(value);
     store.getPartysInfo(year, value);
   };
-
-  const [modalView, setModalView] = useState(false);
 
   useEffect(() => {
     store.getPartysInfo(year, selectMonth);
@@ -61,7 +58,7 @@ function Home() {
           // 기간이 남은 리스트
           store.partys !== null ? (
             store.partys
-              .filter((item) => new Date(item.dateTime) >= date)
+              .filter((item) => new Date(item.dateTime) >= date && !item.cancel)
               .map((item) => (
                 <List
                   key={item.id}
@@ -79,14 +76,12 @@ function Home() {
           // 이미 기간이 지난 리스트
           store.partys != null &&
             store.partys
-              .filter((item) => new Date(item.dateTime) < date)
+              .filter((item) => new Date(item.dateTime) < date || item.cancel)
               .map((item) => (
-                <List key={item.id} info={item} name={getCookie("name")} />
+                <List key={item.id} info={item} name={getCookie("name")} disable={true} />
               ))
         }
       </section>
-
-      {modalView && <CancelModal />}
     </HomeConteiner>
   );
 }

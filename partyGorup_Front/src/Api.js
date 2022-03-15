@@ -40,15 +40,14 @@ export const useStore = create((set) => ({
       });
   },
 
-  addParty(data) {
-    instance
+  async addParty(data) {
+    await instance
       .post(`${url}party`, data)
       .then((res) => {
         toast.fire({
           icon: 'success',
           title: "정상적으로 생성됐어요!"
         })
-        set((state) => ({partys: state.partys}))
       })
       .catch((err) => {
         toast.fire({
@@ -90,14 +89,16 @@ export const useStore = create((set) => ({
           icon: 'success',
           title: "정상적으로 취소했어요!"
         })
-        set((state) => ({
-          partys: state.partys.map((item) => {
-            if(item.id === id) {
-              return {...item, members: item.members.filter((member) => (member.code !== code))}
-            }
+        
+        let temp = this.partys.map((item) => {
+          if(item.id === id) {
+            return {...item, members: item.members.filter((member) => (member.code !== code))}
+          } else {
             return {...item}
-          })
-        }))
+          }
+        })
+
+        set({partys: temp})
       })
       .catch((err) => {
         console.log(err)
@@ -109,5 +110,17 @@ export const useStore = create((set) => ({
       })
   },
 
-  delParty(id) {},
-}));
+  delParty(id) {
+    instance
+      .delete(`${url}party/${btoa(id.toString())}`)
+      .then((res) => {
+        toast.fire({
+          icon: 'success',
+          title: "정상적으로 취소됐어요!"
+        })
+
+        let temp = this.partys.filter((item) => item.id !== id)
+        set({partys: temp})
+      })
+  },
+}))
