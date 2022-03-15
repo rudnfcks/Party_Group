@@ -6,6 +6,7 @@ import Logo from "../../components/Logo/Logo";
 import LoginModal from "./LoginModal";
 import { setCookie, getCookie } from "../../cookie";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Login() {
     const navigate = useNavigate()
@@ -17,6 +18,15 @@ function Login() {
     }
     const onSubmitHandler = (e) => {
         e.preventDefault()
+
+        if (name == null || name === "") {
+            Swal.fire({
+                title: "이름을 입력해주세요!",
+                confirmButtonText: "확인",
+                confirmButtonColor: "#9E40D7",
+            });
+            return
+        }
         
         const code = new Date().getTime();
         

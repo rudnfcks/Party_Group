@@ -7,8 +7,10 @@ import trashCan from "../../asset/img/trashCan.svg";
 import Button from "../../components/Button/Button";
 import { useStore } from "../../Api";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
-function List({ listId, info, name, code, disable }) {
+function List({ listId, info, name, code, disable, setPage }) {
+  const navigate = useNavigate()
   const store = useStore();
 
   const date = new Date(info.dateTime);
@@ -43,6 +45,11 @@ function List({ listId, info, name, code, disable }) {
     }
   }
 
+  const onEditClick = () => {
+    setPage("edit")
+    navigate(`../edit/${btoa(listId)}`, {replace: true});
+  }
+
   const onDelClick = () => {
     Swal.fire({
       title: "정말 취소 할까요?",
@@ -63,7 +70,7 @@ function List({ listId, info, name, code, disable }) {
         <span>{info.place}</span>
         {info.members[0].name === name ? (
           <div>
-            <ImgButton url={modify} alt="수정" size={20} />
+            <ImgButton url={modify} alt="수정" size={20} onClick={onEditClick} />
             <ImgButton url={trashCan} alt="삭제" size={20} onClick={onDelClick} />
           </div>
         ) : (

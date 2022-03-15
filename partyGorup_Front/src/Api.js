@@ -57,6 +57,23 @@ export const useStore = create((set) => ({
       });
   },
 
+  async editParty(id, data) {
+    await instance
+      .put(`${url}party/${id}`, data)
+      .then((res) => {
+        toast.fire({
+          icon: 'success',
+          title: "정상적으로 수정했어요!"
+        })
+      })
+      .catch((err) => {
+        toast.fire({
+          icon: 'warning',
+          title: "코드가 다르거나 문제가 생겼어요!"
+        })
+      })
+  },
+
   joinParty(id, data) {
     instance
       .post(`${url}member/${btoa(id.toString())}`, data)

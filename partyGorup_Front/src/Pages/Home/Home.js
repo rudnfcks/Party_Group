@@ -8,7 +8,7 @@ import List from "../../template/List/List";
 import { HomeConteiner } from "./HomeConteiner";
 import { dateToString } from "../../Util";
 
-function Home() {
+function Home({setPage}) {
   const store = useStore();
   const { year, month, day, week, date } = dateToString(new Date());
 
@@ -66,6 +66,7 @@ function Home() {
                   info={item}
                   name={getCookie("name")}
                   code={getCookie("code")}
+                  setPage={setPage}
                 />
               ))
           ) : (
