@@ -10,7 +10,7 @@ const instance = axios.create(
   }}
 )
 
-const url = "http://partyGroup.iptime.org/api/";
+const url = "/api/";
 
 const toast = Swal.mixin({
   toast: true, 
