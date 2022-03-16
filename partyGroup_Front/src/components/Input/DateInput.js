@@ -5,19 +5,16 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 import calendarImg from "../../asset/img/calendar.svg";
 import TextButton from "../../components/Button/TextButton";
+import { dateToString } from "../../Util";
 
 function DateInput({value, onChange}) {
     const [DateTimeModal, setDateTimeModal] = useState(false);
 
-    const dateToString = (date) => {
+    const viewDate = (date) => {
         if(date !== undefined) {
-            let year = date.getFullYear()
-            let month = date.getMonth() + 1
-            let day = date.getDate()
-            let hour = date.getHours()
-            let minute = date.getMinutes()
+            let {year, month, day, hours, minutes} = dateToString(date)
 
-            return `${year}-${month}-${day} ${hour}:${minute}`
+            return `${year}-${month}-${day} ${hours}:${minutes}`
         }
     }
 
@@ -30,7 +27,7 @@ function DateInput({value, onChange}) {
         <InputContainer isView={DateTimeModal}>
             <span>날짜 시간</span>
             <button onClick={() => {setModal(true)}}>
-                <input value={dateToString(value)} placeholder="날짜 입력" readOnly></input>
+                <input value={viewDate(value)} placeholder="날짜 입력" readOnly></input>
                 <img src={calendarImg} />
             </button>
         </InputContainer>

@@ -14,17 +14,35 @@ function List({ listId, info, name, code, disable, setPage }) {
   const store = useStore();
 
   const date = new Date(info.dateTime);
-  const now = new Date();
 
   const isJoin = info.members.filter((item) => item.name === name && !item.secession).length > 0;
 
+  const toast = Swal.mixin({
+    toast: true, 
+    position: 'center-center', 
+    showConfirmButton: false, 
+    timer: 1500, 
+    timerProgressBar: true, 
+    didOpen: (toast) => { 
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   const onButtonClick = async () => {
     if (!isJoin) {
-      store.joinParty(listId, {
-        name: name,
-        secession_why: "",
-        code: code,
-      });
+      if (info.members.filter((item)=>(!item.secession)).length >= info.memberCount) {
+        toast.fire({
+          icon: 'warning',
+          title: "이미 파티가 모두 찼어요!"
+        })
+      } else {
+        store.joinParty(listId, {
+          name: name,
+          secession_why: "",
+          code: code,
+        })
+      }
     } else {
       const { value: secessionWhy } = await Swal.fire({
         title: "취소사유를 알려주세요!",
