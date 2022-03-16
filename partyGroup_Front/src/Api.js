@@ -10,7 +10,7 @@ const instance = axios.create(
   }}
 )
 
-const url = "/api/";
+const url = "http://192.168.0.14:5000/api/";
 
 const toast = Swal.mixin({
   toast: true, 
