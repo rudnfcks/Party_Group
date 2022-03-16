@@ -10,7 +10,6 @@ import { dateToString } from "../../Util";
 
 function Home({setPage}) {
   const store = useStore()
-  console.log(store.partys)
   const { year, month, day, week, date } = dateToString(new Date())
 
   const [selectMonth, setSelectMonth] = useState(month)
@@ -91,7 +90,7 @@ function Home({setPage}) {
         }
         {
           // 이미 기간이 지난 리스트
-          store.partys != null &&
+          store.partys !== null &&
             store.partys
               .filter((item) => new Date(item.dateTime) < date || item.cancel)
               .map((item) => (
