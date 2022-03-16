@@ -2,6 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/pgdb
     username: pgmanager
+    #password: 1234
     password: pgadmin1234@
   jpa:
     show-sql: true
