@@ -10,6 +10,7 @@ import { dateToString } from "../../Util";
 
 function Home({setPage}) {
   const store = useStore()
+  console.log(store.partys)
   const { year, month, day, week, date } = dateToString(new Date())
 
   const [selectMonth, setSelectMonth] = useState(month)
