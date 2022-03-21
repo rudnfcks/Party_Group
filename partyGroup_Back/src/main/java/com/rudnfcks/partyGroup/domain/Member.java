@@ -2,9 +2,11 @@ package com.rudnfcks.partyGroup.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+@EqualsAndHashCode
 @Getter @Setter
 public class Member {
     private String name;

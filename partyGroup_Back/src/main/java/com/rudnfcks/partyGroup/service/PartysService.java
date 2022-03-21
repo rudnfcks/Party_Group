@@ -57,12 +57,7 @@ public class PartysService {
         if (party.isEmpty()) {
             return 0L;
         } else {
-            party.get().update(
-                    partysDto.getDateTime(),
-                    partysDto.getPlace(),
-                    partysDto.getMemberCount()
-            );
-
+             party.get().update(partysDto);
             return id;
         }
     }

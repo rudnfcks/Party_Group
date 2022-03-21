@@ -1,5 +1,6 @@
 package com.rudnfcks.partyGroup.domain;
 
+import com.rudnfcks.partyGroup.controller.Dto.PartysDto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
@@ -67,11 +69,11 @@ public class Partys extends TimeEntity {
         this.members = members;
     }
 
-    public void update(LocalDateTime dateTime, String place, int memberCount) {
-        this.dateTime = dateTime;
-        this.date = dateTimeToDate(dateTime);
-        this.place = place;
-        this.memberCount = memberCount;
+    public void update(PartysDto partysDto) {
+        this.dateTime = partysDto.getDateTime();
+        this.date = dateTimeToDate(partysDto.getDateTime());
+        this.place = partysDto.getPlace();
+        this.memberCount = partysDto.getMemberCount();
     }
 
     public void updateMembers(List<Member> members) {
