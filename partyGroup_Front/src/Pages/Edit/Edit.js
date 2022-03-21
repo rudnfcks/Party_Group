@@ -48,7 +48,9 @@ function Edit({ setPage }) {
       place: place,
       memberCount: count,
       isCancel: false
-    }).then(navigate("/home", { replace: true }))    
+    })
+    
+    navigate("/home", { replace: true })
   };
 
   return (

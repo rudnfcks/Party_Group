@@ -40,7 +40,7 @@ function Login() {
         if (getCookie("name") && getCookie("code")) {
             navigate("/page", {replace: true})
         }
-    })
+    }, [])
 
     return(
         <BackgroundPurple>

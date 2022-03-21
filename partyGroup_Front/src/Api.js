@@ -16,7 +16,7 @@ const toast = Swal.mixin({
   toast: true, 
   position: 'center-center', 
   showConfirmButton: false, 
-  timer: 1500, 
+  timer: 800, 
   timerProgressBar: true, 
   didOpen: (toast) => { 
     toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -27,6 +27,7 @@ const toast = Swal.mixin({
 export const useStore = create((set) => ({
   partys: [],
 
+  // 파티 조회
   getPartysInfo(year, month) {
     set({ partys: null });
 
@@ -36,17 +37,26 @@ export const useStore = create((set) => ({
         set({ partys: res.data });
       })
       .catch((err) => {
-        console.log("Error : " + err);
+        toast.fire({
+          icon: 'warning',
+          title: "데이터를 불러올 수 없어요!"
+        })
       });
   },
 
-  async addParty(data) {
-    await instance
+  // 파티 추가
+  addParty(data) {
+    instance
       .post(`${url}party`, data)
       .then((res) => {
+        let temp = JSON.parse(JSON.stringify(this.partys))
+        temp.unshift({...data, id: res.data})
+
         toast.fire({
           icon: 'success',
           title: "정상적으로 생성됐어요!"
+        }).then(() => {
+          set({ partys: temp })
         })
       })
       .catch((err) => {
@@ -57,13 +67,29 @@ export const useStore = create((set) => ({
       });
   },
 
-  async editParty(id, data) {
-    await instance
+  // 파티 수정
+  editParty(id, data) {
+    instance
       .put(`${url}party/${id}`, data)
       .then((res) => {
+        let temp = this.partys.map((item) => {
+          if(item.id == atob(id)) {
+            return {
+              ...item,
+              dateTime: data.dateTime,
+              isCancel: data.isCancel,
+              memberCount: data.memberCount,
+              place: data.place
+            }
+          }
+          return item
+        })
+
         toast.fire({
           icon: 'success',
           title: "정상적으로 수정했어요!"
+        }).then(() => {
+          set({ partys: temp })
         })
       })
       .catch((err) => {
@@ -74,21 +100,24 @@ export const useStore = create((set) => ({
       })
   },
 
+  // 파티 조인
   joinParty(id, data) {
     instance
       .post(`${url}member/${btoa(id.toString())}`, data)
       .then((res) => {
-        toast.fire({
-          icon: 'success',
-          title: "정상적으로 참여했어요!"
-        })
         let temp = this.partys.map((item) => {
             if(item.id === id) {
               item.members.push(data)
             }
             return {...item}
           })
-        set({partys: temp})
+
+        toast.fire({
+          icon: 'success',
+          title: "정상적으로 참여했어요!"
+        }).then(() => {
+          set({ partys: temp })
+        })
       })
       .catch((err) => {
         toast.fire({
@@ -98,15 +127,11 @@ export const useStore = create((set) => ({
       })
   },
 
+  // 파티 탈주
   leaveParty(id, code, data) {
     instance
       .delete(`${url}member/${btoa(id.toString())}`, {data})
-      .then((res) => {
-        toast.fire({
-          icon: 'success',
-          title: "정상적으로 취소했어요!"
-        })
-        
+      .then((res) => {        
         let temp = this.partys.map((item) => {
           if(item.id === id) {
             return {...item, members: item.members.filter((member) => (member.code !== code))}
@@ -114,8 +139,13 @@ export const useStore = create((set) => ({
             return {...item}
           }
         })
-
-        set({partys: temp})
+        
+        toast.fire({
+          icon: 'success',
+          title: "정상적으로 취소했어요!"
+        }).then(() => {
+          set({ partys: temp })
+        })
       })
       .catch((err) => {
         console.log(err)
@@ -127,17 +157,24 @@ export const useStore = create((set) => ({
       })
   },
 
+  // 파티 취소
   delParty(id) {
     instance
       .delete(`${url}party/${btoa(id.toString())}`)
       .then((res) => {
+        let temp = this.partys.filter((item) => item.id !== id)
+
         toast.fire({
           icon: 'success',
           title: "정상적으로 취소됐어요!"
+        }).then(() => {
+          set({ partys: temp })
         })
-
-        let temp = this.partys.filter((item) => item.id !== id)
-        set({partys: temp})
+      }).catch((err) => {
+        toast.fire({
+          icon: 'warning',
+          title: "취소 중 문제가 발생했어요!"
+        })
       })
   },
 }))

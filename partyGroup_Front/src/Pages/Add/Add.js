@@ -56,7 +56,9 @@ function Add({ setPage }) {
           code: getCookie("code"),
         },
       ],
-    }).then(navigate("/home", { replace: true }))    
+    })
+    
+    navigate("/home", { replace: true })
   };
 
   return (

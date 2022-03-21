@@ -21,7 +21,7 @@ function List({ listId, info, name, code, disable, setPage }) {
     toast: true, 
     position: 'center-center', 
     showConfirmButton: false, 
-    timer: 1500, 
+    timer: 800, 
     timerProgressBar: true, 
     didOpen: (toast) => { 
       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -70,7 +70,8 @@ function List({ listId, info, name, code, disable, setPage }) {
 
   const onDelClick = () => {
     Swal.fire({
-      title: "정말 취소 할까요?",
+      title: "정말 파티를 취소 할까요?",
+      text: "파티 취소 시 복구가 불가능해요!",
       showCancelButton: true,
       confirmButtonColor: "#9E40D7",
       cancelButtonText: "취소",
