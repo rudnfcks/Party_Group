@@ -9,6 +9,10 @@ spring:
     hibernate:
       ddl-auto: create
 
+logging:
+  level: info
+  file:
+    name: ~/logs/workLog.log
 
 server:
   port: 5000

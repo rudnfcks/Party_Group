@@ -28,7 +28,7 @@ export const useStore = create((set) => ({
   partys: [],
 
   // 파티 조회
-  getPartysInfo(year, month) {
+  getPartysInfo(year) {
     set({ partys: null });
 
     instance
@@ -111,11 +111,12 @@ export const useStore = create((set) => ({
             }
             return {...item}
           })
-        set({ partys: temp })
 
         toast.fire({
           icon: 'success',
           title: "정상적으로 참여했어요!"
+        }).then(() => {
+          set({ partys: temp })
         })
       })
       .catch((err) => {
@@ -137,12 +138,12 @@ export const useStore = create((set) => ({
           } else {
             return {...item}
           }
-        })
-        set({ partys: temp })
-        
+        })        
         toast.fire({
           icon: 'success',
           title: "정상적으로 취소했어요!"
+        }).then(() => {
+          set({ partys: temp })
         })
       })
       .catch((err) => {

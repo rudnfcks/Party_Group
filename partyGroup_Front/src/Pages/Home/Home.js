@@ -12,10 +12,10 @@ function Home({setPage}) {
   const store = useStore()
   const { year, month, day, week, date } = dateToString(new Date())
 
-  const [selectMonth, setSelectMonth] = useState(month)
-  const onSelectMonthChange = (value) => {
-    setSelectMonth(value)
-    store.getPartysInfo(year, value)
+  const [selectDate, setSelectDate] = useState(year)
+  const onSelectDateChange = (value) => {
+    setSelectDate(value)
+    store.getPartysInfo(value)
   };
 
   const [scrollEvent, setScrollEvent] = useState(0)
@@ -35,6 +35,8 @@ function Home({setPage}) {
         }
       })
       return temp.length
+    } else {
+      return 0
     }
   }
 
@@ -43,19 +45,21 @@ function Home({setPage}) {
     if (store.partys !== null) {
       let temp = store.partys.filter(item => new Date(item.dateTime).getMonth() === now.getMonth());
       return temp.length
+    } else {
+      return 0
     }
   }
 
   useEffect(() => {
     window.addEventListener('scroll', () => {setScrollEvent(window.scrollY)})
-    store.getPartysInfo(year, selectMonth)
-  }, [year, selectMonth])
+    store.getPartysInfo(selectDate)
+  }, [selectDate])
 
   return (
     <HomeConteiner scroll={scrollEvent}>
       <header id="fixHeader">
         <MainLogo color="#ffffff" />
-        <MonthSelect value={selectMonth} onChange={onSelectMonthChange} />
+        <MonthSelect value={selectDate} onChange={onSelectDateChange} />
 
         <div id="date">
           <span>
@@ -67,7 +71,7 @@ function Home({setPage}) {
 
       <header id="header">
         <MainLogo color="#501E6F" />
-        <MonthSelect value={selectMonth} onChange={onSelectMonthChange} />
+        <MonthSelect value={selectDate} onChange={onSelectDateChange} />
       </header>
 
       <section id="top">

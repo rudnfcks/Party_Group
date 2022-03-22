@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListContainer } from "./ListContainer";
 import ImgButton from "../../components/Button/ImgButton";
 
@@ -9,9 +9,11 @@ import { useStore } from "../../Api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function List({ listId, info, name, code, disable, setPage }) {
+function List({ listId, info, name, code, setPage }) {
   const navigate = useNavigate()
   const store = useStore();
+
+  const [disable, setDisable] = useState(false);
 
   const date = new Date(info.dateTime);
 
@@ -37,11 +39,15 @@ function List({ listId, info, name, code, disable, setPage }) {
           title: "이미 파티가 모두 찼어요!"
         })
       } else {
+        setDisable(true)
         store.joinParty(listId, {
           name: name,
           secession_why: "",
           code: code,
         })
+        setTimeout(() => {
+          setDisable(false)
+        }, 1000)
       }
     } else {
       const { value: secessionWhy } = await Swal.fire({
@@ -97,7 +103,7 @@ function List({ listId, info, name, code, disable, setPage }) {
         )}
       </div>
       <div className="middle">
-        <span>{`${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}`}</span>
+        <span>{`${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}:${date.getMinutes()}`}</span>
         <span>{`${info.members.filter((item)=>(!item.secession)).length}/${info.memberCount}`}</span>
       </div>
       <div className="bottom">
@@ -109,10 +115,9 @@ function List({ listId, info, name, code, disable, setPage }) {
           ))}
         </p>
         {info.members[0].name !== name && (
-          <Button onClick={onButtonClick}>{isJoin ? "취소" : "참여"}</Button>
+          <Button onClick={onButtonClick} disabled={disable} >{isJoin ? "취소" : "참여"}</Button>
         )}
       </div>
-      {disable && <div className="disable"></div>}
     </ListContainer>
   );
 }

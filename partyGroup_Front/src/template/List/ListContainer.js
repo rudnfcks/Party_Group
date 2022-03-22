@@ -5,10 +5,9 @@ export const ListContainer = styled.div`
     margin-top: 16px;
 
     width: 100%;
-    height: 120px;
 
     box-sizing: border-box;
-    padding: 12px 10px 0 12px;
+    padding: 12px 10px 10px 12px;
 
     background: #ffffff;
     border-left: 4px solid #9E40D7;
@@ -17,21 +16,20 @@ export const ListContainer = styled.div`
 
     .top {
         width: 100%;
-        height: 24px;
+
+        display: flex;
 
         span {
-            float: left;
             display: block;
 
             width: calc(100% - 54px);
-            height: 24px;
 
             font-size: 24px;
             font-family: "sans";
+            white-space: pre-line;
         }
 
         div {
-            float: right;
             width: 54px;
 
             button {
@@ -97,17 +95,5 @@ export const ListContainer = styled.div`
         button {
             float: right;
         }
-    }
-
-    .disable {
-        position: absolute;
-        z-index: 2;
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 100%;
-
-        background: rgba(0,0,0,0.25);
     }
 `

@@ -6,7 +6,8 @@ import com.rudnfcks.partyGroup.controller.Dto.PartysDto;
 import com.rudnfcks.partyGroup.domain.Member;
 import com.rudnfcks.partyGroup.domain.Partys;
 import com.rudnfcks.partyGroup.service.PartysService;
-import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,16 @@ import java.util.stream.Collectors;
 public class PartysController {
     @Autowired
     private PartysService partysService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostMapping("/party") // 파티 추가
     public ResponseEntity saveParty(@RequestBody PartysDto partysDto) {
         try {
             long id = partysService.createParty(partysDto);
+            logger.info(partysDto.getMembers().get(0).getCode() + " - Make Party - " + id);
             return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (Exception e) {
+            logger.error(partysDto.getMembers().get(0).getCode() + " - Make Party");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -59,12 +63,15 @@ public class PartysController {
         try {
             Optional<Partys> value = partysService.findOne(id);
             if (value.isEmpty()) { // DB에 값이 없다면
+                logger.warn(memberDto.getCode() + " - Add Member - " + id);
                 return new ResponseEntity<>("존재하지 않는 ID값 입니다.", HttpStatus.NOT_FOUND);
             } else {
                 long rt_id = partysService.addMember(id, memberDto.toEntity());
+                logger.info(memberDto.getCode() + " - Add Member - " + id);
                 return new ResponseEntity<>(rt_id, HttpStatus.OK);
             }
         } catch (Exception e) {
+            logger.error(memberDto.getCode() + " - Add Member - " + id);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -77,6 +84,7 @@ public class PartysController {
             Optional<Partys> value = partysService.findOne(id);
 
             if (value.isEmpty()) { // DB에 값이 없다면
+                logger.warn(code + " - Del Member - " + id);
                 return new ResponseEntity<>("존재하지 않는 ID값 입니다.", HttpStatus.NOT_FOUND);
             } else {
                 List<Member> memberValue = value.get().getMembers().stream().filter(member ->
@@ -84,8 +92,10 @@ public class PartysController {
                 );
 
                 if (memberValue.size() == 0) { // Header에 code가 DB에 code와 다르다면
+                    logger.warn(code + " - Del Member - " + id + " key");
                     return new ResponseEntity<>("코드가 일치하지 않거나 존재하지 않습니다.", HttpStatus.UNAUTHORIZED);
                 } else {
+                    logger.info(code + " - Del Member - " + id);
                     long rt_id = partysService.delMember(id, memberDto.toEntity());
                     return new ResponseEntity<>(rt_id, HttpStatus.OK);
                 }
@@ -102,19 +112,24 @@ public class PartysController {
         try {
             Optional<Partys> value = partysService.findOne(id);
 
+
             if (value.isEmpty()) { // DB에 값이 없다면
+                logger.warn(code + " - Edit Party - " + id);
                 return new ResponseEntity<>("존재하지 않는 ID값 입니다.", HttpStatus.NOT_FOUND);
             } else {
                 Member leader = value.get().getMembers().get(0);
 
                 if (!(leader.getCode().equals(code))) { // Header에 code가 DB에 code와 다르다면
+                    logger.warn(code + " - Edit Party - " + id + " key");
                     return new ResponseEntity<>("코드가 일치하지 않거나 존재하지 않습니다.", HttpStatus.UNAUTHORIZED);
                 } else {
+                    logger.info(code + " - Edit Party - " + id);
                     long rt_id = partysService.updatePartys(id, partysDto);
                     return new ResponseEntity<>(rt_id, HttpStatus.OK);
                 }
             }
         } catch (Exception e) {
+            logger.error(code + " - Edit Party - " + id);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -127,18 +142,22 @@ public class PartysController {
             Optional<Partys> value = partysService.findOne(id);
 
             if (value.isEmpty()) { // DB에 값이 없다면
+                logger.warn(code + " - Del Party - " + id);
                 return new ResponseEntity<>("존재하지 않는 ID값 입니다.", HttpStatus.NOT_FOUND);
             } else {
                 Member leader = value.get().getMembers().get(0);
 
                 if (!(leader.getCode().equals(code))) { // Header에 code가 DB에 code와 다르다면
+                    logger.warn(code + " - Del Party - " + id + " key");
                     return new ResponseEntity<>("코드가 일치하지 않거나 존재하지 않습니다.", HttpStatus.UNAUTHORIZED);
                 } else {
+                    logger.info(code + " - Del Party - " + id);
                     long rt_id = partysService.cancelPartys(id);
                     return new ResponseEntity<>(rt_id, HttpStatus.OK);
                 }
             }
         } catch (Exception e) {
+            logger.error(code + " - Del Party - " + id);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
