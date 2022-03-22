@@ -53,7 +53,7 @@ function Add({ setPage }) {
     store.addParty({
       id: 0,
       dateTime: `${year}-${month}-${day}T${hours}:${minutes}:${second}`,
-      date: `${year}-${month}`,
+      date: `${year}`,
       place: place,
       memberCount: count,
       isCancel: false,
