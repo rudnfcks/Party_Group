@@ -35,7 +35,7 @@ public class Partys extends TimeEntity {
     private LocalDateTime dateTime;
 
     @Column(name = "date", nullable = false)
-    private String date; // yyyy-MM
+    private String date; // yyyy
 
     @Column(name = "place", nullable = false)
     private String place;
@@ -85,6 +85,6 @@ public class Partys extends TimeEntity {
     }
 
     public static String dateTimeToDate(LocalDateTime dateTime) {
-        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy"));
     }
 }

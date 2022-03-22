@@ -32,7 +32,7 @@ export const useStore = create((set) => ({
     set({ partys: null });
 
     instance
-      .get(`${url}partys?date=${year}-${month}`)
+      .get(`${url}partys?date=${year}`)
       .then((res) => {
         set({ partys: res.data });
       })
@@ -111,12 +111,11 @@ export const useStore = create((set) => ({
             }
             return {...item}
           })
+        set({ partys: temp })
 
         toast.fire({
           icon: 'success',
           title: "정상적으로 참여했어요!"
-        }).then(() => {
-          set({ partys: temp })
         })
       })
       .catch((err) => {
@@ -139,12 +138,11 @@ export const useStore = create((set) => ({
             return {...item}
           }
         })
+        set({ partys: temp })
         
         toast.fire({
           icon: 'success',
           title: "정상적으로 취소했어요!"
-        }).then(() => {
-          set({ partys: temp })
         })
       })
       .catch((err) => {
@@ -163,12 +161,11 @@ export const useStore = create((set) => ({
       .delete(`${url}party/${btoa(id.toString())}`)
       .then((res) => {
         let temp = this.partys.filter((item) => item.id !== id)
+        set({ partys: temp })
 
         toast.fire({
           icon: 'success',
           title: "정상적으로 취소됐어요!"
-        }).then(() => {
-          set({ partys: temp })
         })
       }).catch((err) => {
         toast.fire({

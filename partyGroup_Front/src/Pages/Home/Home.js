@@ -20,6 +20,32 @@ function Home({setPage}) {
 
   const [scrollEvent, setScrollEvent] = useState(0)
 
+  const getToWeekCount = () => {
+    let now = new Date()
+    let firstDay = day - now.getDay()
+    let lastDay = parseInt(day) + (6 - now.getDay())
+
+    if (store.partys !== null) {
+      let temp = store.partys.filter(item => {
+        let itemDay = new Date(item.dateTime).getDate()
+        if (itemDay >= firstDay && itemDay <= lastDay) {
+          return true
+        } else {
+          return false
+        }
+      })
+      return temp.length
+    }
+  }
+
+  const getToMonthCount = () => {
+    let now = new Date()
+    if (store.partys !== null) {
+      let temp = store.partys.filter(item => new Date(item.dateTime).getMonth() === now.getMonth());
+      return temp.length
+    }
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', () => {setScrollEvent(window.scrollY)})
     store.getPartysInfo(year, selectMonth)
@@ -54,15 +80,15 @@ function Home({setPage}) {
         </div>
         <div id="count">
           <p>
-            이번 달의 파티{" "}
+            이번 달의 파티
             <span>
-              <b>{0}</b> 회
+              <b>{getToMonthCount()}</b> 회
             </span>
           </p>
           <p>
-            이번 주의 파티{" "}
+            이번 주의 파티
             <span>
-              <b>{0}</b> 회
+              <b>{getToWeekCount()}</b> 회
             </span>
           </p>
         </div>
@@ -87,15 +113,6 @@ function Home({setPage}) {
           ) : (
             <img src={loading} alt="loading..." />
           )
-        }
-        {
-          // 이미 기간이 지난 리스트
-          store.partys !== null &&
-            store.partys
-              .filter((item) => new Date(item.dateTime) < date || item.cancel)
-              .map((item) => (
-                <List key={item.id} info={item} name={getCookie("name")} disable={true} />
-              ))
         }
       </section>
     </HomeConteiner>

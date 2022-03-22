@@ -39,7 +39,16 @@ function Add({ setPage }) {
       return;
     }
 
-    const { year, month, day, hours, minutes, second } = dateToString(dateTime);
+    const { year, month, day, hours, minutes, second, date } = dateToString(dateTime);
+
+    if (date < new Date()) {
+      Swal.fire({
+        title: "날짜가 과거에요!",
+        confirmButtonText: "확인",
+        confirmButtonColor: "#9E40D7",
+      });
+      return;
+    }
 
     store.addParty({
       id: 0,

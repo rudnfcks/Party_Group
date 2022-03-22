@@ -33,7 +33,7 @@ public class PartysController {
     }
 
     @GetMapping("/partys") // 파티 조회
-    public ResponseEntity findPartys(@RequestParam(value = "date", defaultValue = "2022-01") String date) {
+    public ResponseEntity findPartys(@RequestParam(value = "date", defaultValue = "2022") String date) {
         try {
             List<Partys> partys = partysService.findPartys(date);
 
