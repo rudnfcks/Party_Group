@@ -10,7 +10,8 @@ spring:
       ddl-auto: create
 
 logging:
-  level: info
+  level:
+    root: info
 
 server:
   port: 5000
