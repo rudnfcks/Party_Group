@@ -12,6 +12,8 @@ spring:
 logging:
   level:
     root: info
+  file:
+    name: /home/pi/logs/workLog.log
 
 server:
   port: 5000
