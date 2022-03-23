@@ -11,8 +11,6 @@ spring:
 
 logging:
   level: info
-  file:
-    name: ~/logs/workLog.log
 
 server:
   port: 5000
