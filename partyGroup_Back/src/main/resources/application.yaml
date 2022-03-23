@@ -5,7 +5,6 @@ spring:
     #password: 1234
     password: pgadmin1234@
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: create
 
